@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbEvent", "UsbEvent\UsbEvent.csproj", "{63057826-2ABE-4D59-9105-A0C009BFFD2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63057826-2ABE-4D59-9105-A0C009BFFD2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63057826-2ABE-4D59-9105-A0C009BFFD2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63057826-2ABE-4D59-9105-A0C009BFFD2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63057826-2ABE-4D59-9105-A0C009BFFD2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0F54A5B9-4EC2-433C-A518-E5CAA5012043}
+	EndGlobalSection
+EndGlobal
