@@ -46,10 +46,11 @@ namespace UsbEvent
         {
             ManagementBaseObject instance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
             string name = e.NewEvent.ClassPath.ClassName;
+
             Console.WriteLine($"{name} - {(string)instance["Name"]} ({(string)instance["ClassGuid"]})");
 
             if (new Guid((string)instance["ClassGuid"]) == GUID_DEVCLASS_USB 
-                && (string)instance["Name"] == NAME
+                && ((string)instance["Name"]).Replace(" " , String.Empty).Equals(NAME.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase)
                 && name == "__InstanceCreationEvent")
             {
                 Console.WriteLine("restarting reaper");
@@ -59,8 +60,11 @@ namespace UsbEvent
                 if (process != null)
                 {
                     process.Kill();
-                    var path = process.MainModule.FileName;
-                    Process.Start(path);
+     
+                    ProcessStartInfo startInfo = new ProcessStartInfo(process.MainModule.FileName);
+                    startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+
+                    Process.Start(startInfo);
                 }
                 
             }
