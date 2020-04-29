@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace UsbEvent
 {
@@ -13,7 +14,63 @@ namespace UsbEvent
         static readonly Guid GUID_DEVCLASS_USB = new Guid("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}");
         static readonly string NAME = "Microphone (Blue Snowball)";
 
-        static void RestartApplication(string processname)
+        static partial class NativeMethods
+        {
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+
+            [FlagsAttribute]
+            public enum EXECUTION_STATE : uint
+            {
+                ES_AWAYMODE_REQUIRED = 0x00000040,
+                ES_CONTINUOUS = 0x80000000,
+                ES_DISPLAY_REQUIRED = 0x00000002,
+                ES_SYSTEM_REQUIRED = 0x00000001
+
+                // Legacy flag, should not be used.
+                // ES_USER_PRESENT = 0x00000004
+            }
+        }
+
+        public static class PowerHelper
+        {
+            public static void ForceSystemAwake()
+            {
+                NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.ES_CONTINUOUS |
+                                                      NativeMethods.EXECUTION_STATE.ES_DISPLAY_REQUIRED |
+                                                      NativeMethods.EXECUTION_STATE.ES_SYSTEM_REQUIRED |
+                                                      NativeMethods.EXECUTION_STATE.ES_AWAYMODE_REQUIRED);
+            }
+
+            public static void ResetSystemDefault()
+            {
+                NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.ES_CONTINUOUS);
+            }
+        }
+
+
+        static void Main(string[] args)
+        {
+            try
+            {
+                PowerHelper.ForceSystemAwake();
+                StartMonitoring();
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
+            finally
+            {
+                PowerHelper.ResetSystemDefault();
+                Console.WriteLine("Exiting..");
+            }
+       
+        }
+
+        private static void RestartApplication(string processname)
         {
             var process = Process.GetProcessesByName(processname)[0];
 
@@ -28,20 +85,6 @@ namespace UsbEvent
 
                 Process.Start(startInfo);
             }
-        }
-
-        static void Main(string[] args)
-        {
-            try
-            {
-                StartMonitoring();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.ReadKey();
-            }
-       
         }
 
         private static void StartMonitoring()
@@ -60,7 +103,6 @@ namespace UsbEvent
             {
                 watcher.WaitForNextEvent();
             }
-
         }
 
         private static void SetDisplayMode(DisplayMode mode)
@@ -94,14 +136,18 @@ namespace UsbEvent
         private static void watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             ManagementBaseObject instance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
-            string name = e.NewEvent.ClassPath.ClassName;
 
-            Console.WriteLine($"{name} - {(string)instance["Name"]} ({(string)instance["ClassGuid"]})");
+            string instance_name = (string)instance["Name"];
+            string instance_guid = (string)instance["Name"];
 
-            if (new Guid((string)instance["ClassGuid"]) == GUID_DEVCLASS_USB 
-                && ((string)instance["Name"]).Replace(" " , String.Empty).Equals(NAME.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase) )
+            string event_name = e.NewEvent.ClassPath.ClassName;
+
+            Console.WriteLine($"{event_name} - {instance_name} ({instance_guid})");
+
+            if (new Guid(instance_guid) == GUID_DEVCLASS_USB 
+                && (instance_name).Replace(" " , String.Empty).Equals(NAME.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase) )
             {
-                switch(name)
+                switch(event_name)
                 {
                     case "__InstanceCreationEvent":
                         {
@@ -121,8 +167,6 @@ namespace UsbEvent
                             break;
                         }
                 }
-
-                
                 
             }
         }
