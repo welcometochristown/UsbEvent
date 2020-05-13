@@ -9,10 +9,29 @@ using System.Runtime.InteropServices;
 
 namespace UsbEvent
 {
+ 
     class Program
     {
-        static readonly Guid GUID_DEVCLASS_USB = new Guid("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}");
-        static readonly string NAME = "Microphone (Blue Snowball)";
+        public enum State
+        {
+            Unknown, Active, Passive
+        }
+
+        public class Device
+        {
+            public Guid Guid;
+            public string Name;
+        }
+
+        static readonly IEnumerable<Device> Devices = new[] {
+            new Device { Name = "Microphone (Blue Snowball)", Guid = new Guid("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}") }
+            ,new Device { Name = "Blue Snowball", Guid = new Guid("{4d36e96c-e325-11ce-bfc1-08002be10318}") }
+            ,new Device { Name ="HID-compliant consumer control device" , Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
+            ,new Device { Name ="USB Input Device", Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
+            ,new Device { Name ="USB Composite Device", Guid = new Guid("{36fc9e60-c465-11cf-8056-444553540000}") }
+        };
+
+        static State CurrentState = State.Unknown;
 
         static partial class NativeMethods
         {
@@ -44,6 +63,7 @@ namespace UsbEvent
 
             public static void ResetSystemDefault()
             {
+                Console.WriteLine("Setting Force System Awake OFF");
                 NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.ES_CONTINUOUS);
             }
         }
@@ -53,7 +73,10 @@ namespace UsbEvent
         {
             try
             {
+                Console.WriteLine("Setting Force System Awake ON");
                 PowerHelper.ForceSystemAwake();
+
+                Console.WriteLine("Monitoring...");
                 StartMonitoring();
 
             }
@@ -64,6 +87,7 @@ namespace UsbEvent
             }
             finally
             {
+                Console.WriteLine("Setting Force System Awake OFF");
                 PowerHelper.ResetSystemDefault();
                 Console.WriteLine("Exiting..");
             }
@@ -138,38 +162,48 @@ namespace UsbEvent
             ManagementBaseObject instance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
 
             string instance_name = (string)instance["Name"];
-            string instance_guid = (string)instance["Name"];
+            string instance_guid = (string)instance["ClassGuid"];
 
             string event_name = e.NewEvent.ClassPath.ClassName;
 
             Console.WriteLine($"{event_name} - {instance_name} ({instance_guid})");
 
-            if (new Guid(instance_guid) == GUID_DEVCLASS_USB 
-                && (instance_name).Replace(" " , String.Empty).Equals(NAME.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase) )
+            switch (event_name)
             {
-                switch(event_name)
-                {
-                    case "__InstanceCreationEvent":
-                        {
-                            Console.WriteLine("Restarting Reaper");
-                            RestartApplication("REAPER");
-
-                            Console.WriteLine("SetDisplayMode(Extend)");
-                            SetDisplayMode(DisplayMode.Extend);
-
+                case "__InstanceCreationEvent":
+                    {
+                        if (CurrentState == State.Active)
                             break;
-                        }
-                    case "__InstanceDeletionEvent":
-                        {
-                            Console.WriteLine("SetDisplayMode(Duplicate)");
-                            SetDisplayMode(DisplayMode.Duplicate);
 
+                        if (!Devices.Any(n => n.Guid == new Guid(instance_guid) && (instance_name).Replace(" ", String.Empty).Equals(n.Name.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase)))
                             break;
-                        }
-                }
-                
+
+                        Console.WriteLine("SetDisplayMode(Extend)");
+                        SetDisplayMode(DisplayMode.Extend);
+
+                        Console.WriteLine("Restarting Reaper");
+                        RestartApplication("REAPER");
+
+                        CurrentState = State.Active;
+
+                        break;
+                    }
+                case "__InstanceDeletionEvent":
+                    {
+                        if (CurrentState == State.Passive)
+                            break;
+
+                        if (!Devices.Any(n => n.Guid == new Guid(instance_guid) && (instance_name).Replace(" ", String.Empty).Equals(n.Name.Replace(" ", String.Empty), StringComparison.InvariantCultureIgnoreCase)))
+                            break;
+
+                        Console.WriteLine("SetDisplayMode(Duplicate)");
+                        SetDisplayMode(DisplayMode.Duplicate);
+
+                        CurrentState = State.Passive;
+
+                        break;
+                    }
             }
         }
-
     }
 }
