@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using UsbActioner.Utility;
 using UsbActioner.USB;
 using UsbActioner.Actions;
+using System.Threading.Tasks;
 
 namespace UsbActioner
 {
@@ -28,6 +29,20 @@ namespace UsbActioner
         {
             AddDeviceFromEvent(e);
             Invoke(new Action(() => RefreshUSBEventList()));
+            ActionEvents(e);
+        }
+
+        private void ActionEvents(UsbEvent e)
+        {
+            var actions_to_execute = actions.Where(n => n.device.Equals(e.device) && n.HasType(e.event_type));
+
+            foreach (var a in actions_to_execute)
+            {
+                Task.Run(() =>
+                {
+                    a.Execute();
+                });
+            }
         }
 
         private void AddDeviceFromEvent(UsbEvent e)

@@ -21,19 +21,25 @@ namespace UsbActioner.Actions
 
         private void RestartProcess(string processname)
         {
-             var process = Process.GetProcessesByName(this.ApplicationProcessName)[0];
+            var processes = Process.GetProcessesByName(this.ApplicationProcessName);
 
-            if (process != null)
-            {
-                process.Kill();
+            if (!processes.Any())
+                return;
 
-                ProcessStartInfo startInfo = new ProcessStartInfo(process.MainModule.FileName);
+            var process = processes[0];
 
-                startInfo.WindowStyle = WindowStyle;
-                startInfo.UseShellExecute = true;
+            if (process == null)
+                return;
 
-                Process.Start(startInfo);
-            }
+            process.Kill();
+
+            ProcessStartInfo startInfo = new ProcessStartInfo(process.MainModule.FileName);
+
+            startInfo.WindowStyle = WindowStyle;
+            startInfo.UseShellExecute = true;
+
+            Process.Start(startInfo);
+            
         }
 
         public override void Execute()
