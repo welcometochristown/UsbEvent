@@ -26,18 +26,18 @@ namespace UsbActioner
 
         private void Listener_NewUsbEvent(UsbEvent e)
         {
+            AddDeviceFromEvent(e);
+            Invoke(new Action(() => RefreshUSBEventList()));
+        }
+
+        private void AddDeviceFromEvent(UsbEvent e)
+        {
             var device = usbDevices.SingleOrDefault(n => n.Equals(e.device));
 
             if (device != null)
-            {
                 device.last_event = e;
-            }
             else
-            {
-                usbDevices.Add(e.device); 
-            }
-
-            Invoke(new Action(() => RefreshUSBEventList()));
+                usbDevices.Add(e.device);
         }
 
         private void RefreshActions()
@@ -65,21 +65,36 @@ namespace UsbActioner
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            listener.StartListening();
-            toolStripStatusLabel1.Text = "Listening...";
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
 
-            if(chkKeepWSAlive.Checked)
+            try
             {
-                PowerHelper.ForceSystemAwake();
+                listener.StartListening();
+                toolStripStatusLabel1.Text = "Listening...";
+
+                if (chkKeepWSAlive.Checked)
+                {
+                    PowerHelper.ForceSystemAwake();
+                }
+            }catch(Exception)
+            {
+                btnStart.Enabled = true ;
+                btnStop.Enabled = false;
             }
+            
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
+
             listener.StopListening();
             toolStripStatusLabel1.Text = "Stopped";
 
             PowerHelper.ResetSystemDefault();
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -122,5 +137,6 @@ namespace UsbActioner
                 RefreshActions();
             }            
         }
+
     }
 }
