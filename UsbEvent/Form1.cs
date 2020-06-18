@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using UsbActioner.Utility;
 using UsbActioner.USB;
 using UsbActioner.Actions;
+using System.Threading.Tasks;
 
 namespace UsbActioner
 {
@@ -20,6 +21,7 @@ namespace UsbActioner
         public Form1()
         {
             InitializeComponent();
+
             listener = new UsbListener();
             listener.NewUsbEvent += Listener_NewUsbEvent;
         }
@@ -47,7 +49,10 @@ namespace UsbActioner
 
             foreach(var a in actions_to_execute)
             {
-                a.Execute();
+                Task.Run(() =>
+                {
+                    a.Execute();
+                });
             }
         }
 
