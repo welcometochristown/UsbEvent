@@ -8,14 +8,6 @@ namespace UsbActioner.USB
 {
     public class UsbDevice
     {
-        [Flags]
-        public enum DeviceEventAction
-        {
-            NONE = 0x0,
-            ADDED = 0x1,
-            REMOVED = 0x2
-        }
-
         public string device_name;
         public string device_guid;
 

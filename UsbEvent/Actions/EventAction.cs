@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UsbActioner.USB;
+using static UsbActioner.USB.UsbEvent;
 
 namespace UsbActioner.Actions
 {
@@ -15,20 +16,25 @@ namespace UsbActioner.Actions
 
         public abstract string Name { get; }
 
-        public USB.UsbDevice.DeviceEventAction Actions { get; set;}
+        public DeviceEventType Actions { get; set;}
+
+        public bool HasType(DeviceEventType type)
+        {
+            return ((Actions & type) == type);
+        }
 
         public override string ToString()
         {
-            List<USB.UsbDevice.DeviceEventAction> action_list = new List<UsbDevice.DeviceEventAction>();
+            List<DeviceEventType> action_list = new List<DeviceEventType>();
 
-            if((Actions & USB.UsbDevice.DeviceEventAction.ADDED) == USB.UsbDevice.DeviceEventAction.ADDED)
-                action_list.Add(USB.UsbDevice.DeviceEventAction.ADDED);
+            if((Actions & DeviceEventType.CREATION) == DeviceEventType.CREATION)
+                action_list.Add(DeviceEventType.CREATION);
 
-            if ((Actions & USB.UsbDevice.DeviceEventAction.REMOVED) == USB.UsbDevice.DeviceEventAction.REMOVED)
-                action_list.Add(USB.UsbDevice.DeviceEventAction.REMOVED);
+            if ((Actions & DeviceEventType.DELETION) == DeviceEventType.DELETION)
+                action_list.Add(DeviceEventType.DELETION);
 
             if (action_list.Count == 0)
-                action_list.Add(UsbDevice.DeviceEventAction.NONE);
+                action_list.Add(DeviceEventType.NONE);
 
             return $"{device.device_name} | {string.Join(",", action_list)} | {Name}";
         }

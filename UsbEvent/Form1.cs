@@ -38,6 +38,17 @@ namespace UsbActioner
             }
 
             Invoke(new Action(() => RefreshUSBEventList()));
+            ActionEvents(e);
+        }
+
+        private void ActionEvents(UsbEvent e)
+        {
+            var actions_to_execute = actions.Where(n => n.device.Equals(e.device) && n.HasType(e.event_type));
+
+            foreach(var a in actions_to_execute)
+            {
+                a.Execute();
+            }
         }
 
         private void RefreshActions()

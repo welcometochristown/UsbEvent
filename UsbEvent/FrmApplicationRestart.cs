@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using static UsbActioner.USB.UsbEvent;
 
 namespace UsbActioner
 {
@@ -8,7 +9,7 @@ namespace UsbActioner
     {
         public string Application_Name { get; set; }
         public ProcessWindowStyle Window_Style { get; set; } = ProcessWindowStyle.Normal;
-        public USB.UsbDevice.DeviceEventAction DeviceActions { get; set; } = USB.UsbDevice.DeviceEventAction.NONE;
+        public DeviceEventType DeviceActions { get; set; } = DeviceEventType.NONE;
 
         public FrmApplicationRestart()
         {
