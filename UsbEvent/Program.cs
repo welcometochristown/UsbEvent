@@ -13,23 +13,7 @@ namespace UsbActioner
  
     class Program
     {
-        //public class Device
-        //{
-        //    public Guid Guid;
-        //    public string Name;
-        //}
-
-        //static readonly IEnumerable<Device> Devices = new[] {
-        //    new Device { Name = "Microphone (Blue Snowball)", Guid = new Guid("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}") }
-        //    ,new Device { Name = "Blue Snowball", Guid = new Guid("{4d36e96c-e325-11ce-bfc1-08002be10318}") }
-        //    ,new Device { Name ="HID-compliant consumer control device" , Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
-        //    ,new Device { Name ="USB Input Device", Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
-        //    ,new Device { Name ="USB Composite Device", Guid = new Guid("{36fc9e60-c465-11cf-8056-444553540000}") }
-        //};
-
-        //static State CurrentState = State.Unknown;
-
-
+    
 
         static void Main(string[] args)
         {
@@ -48,8 +32,26 @@ namespace UsbActioner
             {
                 Console.WriteLine("Exiting..");
             }
-       
         }
+
+        #region "old code"
+        //public class Device
+        //{
+        //    public Guid Guid;
+        //    public string Name;
+        //}
+
+        //static readonly IEnumerable<Device> Devices = new[] {
+        //    new Device { Name = "Microphone (Blue Snowball)", Guid = new Guid("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}") }
+        //    ,new Device { Name = "Blue Snowball", Guid = new Guid("{4d36e96c-e325-11ce-bfc1-08002be10318}") }
+        //    ,new Device { Name ="HID-compliant consumer control device" , Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
+        //    ,new Device { Name ="USB Input Device", Guid = new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}") }
+        //    ,new Device { Name ="USB Composite Device", Guid = new Guid("{36fc9e60-c465-11cf-8056-444553540000}") }
+        //};
+
+        //static State CurrentState = State.Unknown;
+
+
 
         //private static void RestartApplication(string processname)
         //{
@@ -86,7 +88,7 @@ namespace UsbActioner
         //    }
         //}
 
-       
+
         //private static void watcher_EventArrived(object sender, EventArrivedEventArgs e)
         //{
         //    ManagementBaseObject instance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
@@ -135,5 +137,7 @@ namespace UsbActioner
         //            }
         //    }
         //}
+
+        #endregion
     }
 }

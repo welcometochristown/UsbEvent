@@ -7,29 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static UsbActioner.USB.UsbEvent;
 
 namespace UsbActioner
 {
     public partial class CtrlActionBar : UserControl
     {
-        public USB.UsbDevice.DeviceEventAction Actions
+        public DeviceEventType Actions
         {
             get
             {
-                USB.UsbDevice.DeviceEventAction result = USB.UsbDevice.DeviceEventAction.NONE;
+                DeviceEventType result = DeviceEventType.NONE;
 
                 if (chkAdded.Checked)
-                    result |= USB.UsbDevice.DeviceEventAction.ADDED;
+                    result |= DeviceEventType.CREATION;
 
                 if (chkRemoved.Checked)
-                    result |= USB.UsbDevice.DeviceEventAction.REMOVED;
+                    result |= DeviceEventType.DELETION;
 
                 return result;
             }
             set
             {
-                chkAdded.Checked = ((value & USB.UsbDevice.DeviceEventAction.ADDED) == USB.UsbDevice.DeviceEventAction.ADDED);
-                chkRemoved.Checked = ((value & USB.UsbDevice.DeviceEventAction.REMOVED) == USB.UsbDevice.DeviceEventAction.REMOVED);
+                chkAdded.Checked = ((value & DeviceEventType.CREATION) == DeviceEventType.CREATION);
+                chkRemoved.Checked = ((value & DeviceEventType.DELETION) == DeviceEventType.DELETION);
             }
         }
 
