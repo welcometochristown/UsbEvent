@@ -44,9 +44,12 @@ namespace UsbActioner.Actions
         }
 
 
-        public override void Execute()
+        public override async Task Execute()
         {
-            SetDisplayMode(DisplayMode);
+            await Task.Run(() =>
+            {
+                SetDisplayMode(DisplayMode);
+            });
         }
 
         public override string ToString()

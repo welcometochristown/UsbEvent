@@ -37,9 +37,13 @@ namespace UsbActioner.Actions
             
         }
 
-        public override void Execute()
+        public override async Task Execute()
         {
-            RestartProcess(ApplicationProcessName);
+           await Task.Run(() =>
+            {
+                RestartProcess(ApplicationProcessName);
+            });
+            
         }
 
         public override string ToString()

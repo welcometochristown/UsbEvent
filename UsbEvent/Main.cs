@@ -243,5 +243,12 @@ namespace UsbActioner
                 RefreshActions();
             }
         }
+
+        private void forceExecuteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var action = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction);
+
+            action?.Execute();
+        }
     }
 }

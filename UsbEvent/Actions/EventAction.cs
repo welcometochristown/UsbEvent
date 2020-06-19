@@ -13,7 +13,7 @@ namespace UsbActioner.Actions
     {
         public UsbDevice device;
 
-        public abstract void Execute();
+        public abstract Task Execute();
 
         public abstract string Name { get; }
 

@@ -46,22 +46,23 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAnotherEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.chkKeepWSAlive = new System.Windows.Forms.CheckBox();
             this.restartApplicationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.setDisplayModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkKeepWSAlive = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
+            this.forceExecuteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -168,9 +169,10 @@
             this.refreshToolStripMenuItem,
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
-            this.addAnotherEventToolStripMenuItem});
+            this.addAnotherEventToolStripMenuItem,
+            this.forceExecuteToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(175, 92);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 136);
             this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             // 
             // refreshToolStripMenuItem
@@ -203,6 +205,20 @@
             this.addAnotherEventToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addAnotherEventToolStripMenuItem.Text = "Add Another Event";
             // 
+            // restartApplicationToolStripMenuItem1
+            // 
+            this.restartApplicationToolStripMenuItem1.Name = "restartApplicationToolStripMenuItem1";
+            this.restartApplicationToolStripMenuItem1.Size = new System.Drawing.Size(174, 22);
+            this.restartApplicationToolStripMenuItem1.Text = "Restart Application";
+            this.restartApplicationToolStripMenuItem1.Click += new System.EventHandler(this.restartApplicationToolStripMenuItem1_Click);
+            // 
+            // setDisplayModeToolStripMenuItem
+            // 
+            this.setDisplayModeToolStripMenuItem.Name = "setDisplayModeToolStripMenuItem";
+            this.setDisplayModeToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.setDisplayModeToolStripMenuItem.Text = "Set Display Mode";
+            this.setDisplayModeToolStripMenuItem.Click += new System.EventHandler(this.setDisplayModeToolStripMenuItem_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -227,20 +243,6 @@
             this.chkKeepWSAlive.UseVisualStyleBackColor = true;
             this.chkKeepWSAlive.CheckedChanged += new System.EventHandler(this.chkKeepWSAlive_CheckedChanged);
             // 
-            // restartApplicationToolStripMenuItem1
-            // 
-            this.restartApplicationToolStripMenuItem1.Name = "restartApplicationToolStripMenuItem1";
-            this.restartApplicationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.restartApplicationToolStripMenuItem1.Text = "Restart Application";
-            this.restartApplicationToolStripMenuItem1.Click += new System.EventHandler(this.restartApplicationToolStripMenuItem1_Click);
-            // 
-            // setDisplayModeToolStripMenuItem
-            // 
-            this.setDisplayModeToolStripMenuItem.Name = "setDisplayModeToolStripMenuItem";
-            this.setDisplayModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.setDisplayModeToolStripMenuItem.Text = "Set Display Mode";
-            this.setDisplayModeToolStripMenuItem.Click += new System.EventHandler(this.setDisplayModeToolStripMenuItem_Click);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.panel3);
@@ -252,16 +254,6 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(5);
             this.panel1.Size = new System.Drawing.Size(923, 510);
             this.panel1.TabIndex = 5;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.listActions);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(5, 261);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(913, 244);
-            this.panel2.TabIndex = 7;
             // 
             // panel3
             // 
@@ -284,6 +276,16 @@
             this.panel4.Size = new System.Drawing.Size(913, 45);
             this.panel4.TabIndex = 9;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.listActions);
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(5, 261);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(913, 244);
+            this.panel2.TabIndex = 7;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -293,6 +295,13 @@
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Actions";
+            // 
+            // forceExecuteToolStripMenuItem
+            // 
+            this.forceExecuteToolStripMenuItem.Name = "forceExecuteToolStripMenuItem";
+            this.forceExecuteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.forceExecuteToolStripMenuItem.Text = "Force Execute";
+            this.forceExecuteToolStripMenuItem.Click += new System.EventHandler(this.forceExecuteToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -312,12 +321,12 @@
             this.statusStrip1.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -350,5 +359,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripMenuItem forceExecuteToolStripMenuItem;
     }
 }
