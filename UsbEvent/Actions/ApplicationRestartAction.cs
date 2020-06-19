@@ -8,15 +8,14 @@ using UsbActioner.USB;
 
 namespace UsbActioner.Actions
 {
-    public class ApplicationRestart : EventAction
+    public class ApplicationRestartAction : EventAction
     {
-        public override string Name => nameof(ApplicationRestart);
+        public override string Name => nameof(ApplicationRestartAction);
         public string ApplicationProcessName { get; set; }
         public ProcessWindowStyle WindowStyle { get; set; }
 
-        public ApplicationRestart(string processname)
+        public ApplicationRestartAction()
         {
-            this.ApplicationProcessName = processname;
         }
 
         private void RestartProcess(string processname)

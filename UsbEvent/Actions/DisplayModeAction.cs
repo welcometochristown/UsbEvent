@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace UsbActioner.Actions
 {
-    public class DisplayMode : EventAction
+    public class DisplayModeAction : EventAction
     {
         public override string Name => nameof(DisplayMode);
 
-        enum DisplayModeEnum
+        public DisplayModeOptionEnum DisplayMode;
+
+        public enum DisplayModeOptionEnum
         {
             Internal,
             External,
@@ -19,22 +21,22 @@ namespace UsbActioner.Actions
             Duplicate
         }
 
-        private static void SetDisplayMode(DisplayModeEnum mode)
+        private static void SetDisplayMode(DisplayModeOptionEnum mode)
         {
             var proc = new Process();
             proc.StartInfo.FileName = "DisplaySwitch.exe";
             switch (mode)
             {
-                case DisplayModeEnum.External:
+                case DisplayModeOptionEnum.External:
                     proc.StartInfo.Arguments = "/external";
                     break;
-                case DisplayModeEnum.Internal:
+                case DisplayModeOptionEnum.Internal:
                     proc.StartInfo.Arguments = "/internal";
                     break;
-                case DisplayModeEnum.Extend:
+                case DisplayModeOptionEnum.Extend:
                     proc.StartInfo.Arguments = "/extend";
                     break;
-                case DisplayModeEnum.Duplicate:
+                case DisplayModeOptionEnum.Duplicate:
                     proc.StartInfo.Arguments = "/clone";
                     break;
             }
@@ -44,7 +46,12 @@ namespace UsbActioner.Actions
 
         public override void Execute()
         {
-            throw new NotImplementedException();
+            SetDisplayMode(DisplayMode);
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} | {DisplayMode.ToString()}";
         }
     }
 }

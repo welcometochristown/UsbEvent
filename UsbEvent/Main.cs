@@ -10,19 +10,21 @@ using UsbActioner.USB;
 using UsbActioner.Actions;
 using System.Threading.Tasks;
 using static UsbActioner.USB.UsbEvent;
+using System.Configuration;
 
 namespace UsbActioner
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         private UsbListener listener = new UsbListener();
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
 
             ActionManager.Init();
 
+            chkKeepWSAlive.Checked = Properties.Settings.Default.KeepAwake;
             RefreshActions();
 
             listener.NewUsbEvent += Listener_NewUsbEvent;
@@ -141,20 +143,14 @@ namespace UsbActioner
 
         private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UsbDevice device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
+            var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
+            var action = new ApplicationRestartAction() { device = device };
 
-            FrmApplicationRestart frm = new FrmApplicationRestart();
-            if(frm.ShowDialog() == DialogResult.OK)
+            if (FrmApplicationRestart.EditAction(action) == DialogResult.OK)
             {
-                ActionManager.Add(new ApplicationRestart(frm.Application_Name)
-                {
-                    WindowStyle = frm.Window_Style,
-                    Actions = frm.DeviceActions, 
-                    device = device
-                });
-
+                ActionManager.Add(action);
                 RefreshActions();
-            }            
+            }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,6 +166,76 @@ namespace UsbActioner
             {
                 var ae = listActions.SelectedItems[0].Tag as EventAction;
                 ActionManager.Remove(ae);
+                RefreshActions();
+            }
+        }
+
+        private void chkKeepWSAlive_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.KeepAwake = chkKeepWSAlive.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void changeScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
+            var action = new DisplayModeAction { device = device };
+
+            if (FrmDisplayMode.EditAction(action) == DialogResult.OK)
+            {
+                ActionManager.Add(action);
+                RefreshActions();
+            }
+
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["ListenOnStart"] == "true")
+                btnStart.PerformClick();
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listActions.SelectedItems.Count > 0)
+            {
+                var ae = listActions.SelectedItems[0].Tag as EventAction;
+
+                if (ae is ApplicationRestartAction)
+                    FrmApplicationRestart.EditAction(ae as ApplicationRestartAction);
+
+                if (ae is DisplayModeAction)
+                    FrmDisplayMode.EditAction(ae as DisplayModeAction);
+
+                RefreshActions();
+            }
+        }
+
+        private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
+            var action = new ApplicationRestartAction() { device = device };
+
+            if (FrmApplicationRestart.EditAction(action) == DialogResult.OK)
+            {
+                ActionManager.Add(action);
+                RefreshActions();
+            }
+        }
+
+        private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
+            var action = new DisplayModeAction { device = device };
+
+            if (FrmDisplayMode.EditAction(action) == DialogResult.OK)
+            {
+                ActionManager.Add(action);
                 RefreshActions();
             }
         }

@@ -38,15 +38,15 @@
             // 
             // txtProcessName
             // 
-            this.txtProcessName.Location = new System.Drawing.Point(91, 32);
+            this.txtProcessName.Location = new System.Drawing.Point(98, 40);
             this.txtProcessName.Name = "txtProcessName";
-            this.txtProcessName.Size = new System.Drawing.Size(358, 22);
+            this.txtProcessName.Size = new System.Drawing.Size(351, 22);
             this.txtProcessName.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 37);
+            this.label1.Location = new System.Drawing.Point(8, 42);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 13);
             this.label1.TabIndex = 1;
@@ -71,15 +71,15 @@
             "Hidden",
             "Maximized",
             "Minimized"});
-            this.cboStartMode.Location = new System.Drawing.Point(91, 58);
+            this.cboStartMode.Location = new System.Drawing.Point(98, 66);
             this.cboStartMode.Name = "cboStartMode";
-            this.cboStartMode.Size = new System.Drawing.Size(182, 21);
+            this.cboStartMode.Size = new System.Drawing.Size(175, 21);
             this.cboStartMode.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 61);
+            this.label2.Location = new System.Drawing.Point(8, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 1;
@@ -87,10 +87,12 @@
             // 
             // ctrlActionBar1
             // 
+            this.ctrlActionBar1.Actions = UsbActioner.USB.UsbEvent.DeviceEventType.NONE;
+            this.ctrlActionBar1.Dock = System.Windows.Forms.DockStyle.Top;
             this.ctrlActionBar1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlActionBar1.Location = new System.Drawing.Point(6, 6);
+            this.ctrlActionBar1.Location = new System.Drawing.Point(5, 5);
             this.ctrlActionBar1.Name = "ctrlActionBar1";
-            this.ctrlActionBar1.Size = new System.Drawing.Size(166, 21);
+            this.ctrlActionBar1.Size = new System.Drawing.Size(451, 21);
             this.ctrlActionBar1.TabIndex = 5;
             // 
             // FrmApplicationRestart
@@ -106,7 +108,8 @@
             this.Controls.Add(this.txtProcessName);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FrmApplicationRestart";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Padding = new System.Windows.Forms.Padding(5, 5, 0, 0);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Application Restart";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmApplicationRestart_FormClosing);
             this.Load += new System.EventHandler(this.FrmApplicationRestart_Load);

@@ -20,7 +20,7 @@ namespace UsbActioner
             try
             {
                 Application.EnableVisualStyles();
-                Application.Run(new Form1());
+                Application.Run(new Main());
 
             }
             catch(Exception ex)

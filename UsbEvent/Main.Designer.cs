@@ -1,6 +1,6 @@
 ﻿namespace UsbActioner
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -38,13 +38,17 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.listActions = new System.Windows.Forms.ListView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.chkKeepWSAlive = new System.Windows.Forms.CheckBox();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addAnotherEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkKeepWSAlive = new System.Windows.Forms.CheckBox();
+            this.restartApplicationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.setDisplayModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -104,6 +108,7 @@
             this.changeScreenToolStripMenuItem.Name = "changeScreenToolStripMenuItem";
             this.changeScreenToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.changeScreenToolStripMenuItem.Text = "Set Display Mode";
+            this.changeScreenToolStripMenuItem.Click += new System.EventHandler(this.changeScreenToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -135,6 +140,57 @@
             this.listActions.UseCompatibleStateImageBehavior = false;
             this.listActions.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Action";
+            this.columnHeader1.Width = 578;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Last Run";
+            this.columnHeader2.Width = 192;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.addAnotherEventToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // addAnotherEventToolStripMenuItem
+            // 
+            this.addAnotherEventToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.restartApplicationToolStripMenuItem1,
+            this.setDisplayModeToolStripMenuItem});
+            this.addAnotherEventToolStripMenuItem.Name = "addAnotherEventToolStripMenuItem";
+            this.addAnotherEventToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addAnotherEventToolStripMenuItem.Text = "Add Another Event";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -156,40 +212,23 @@
             this.chkKeepWSAlive.TabIndex = 4;
             this.chkKeepWSAlive.Text = "Keep Workstation Awake";
             this.chkKeepWSAlive.UseVisualStyleBackColor = true;
+            this.chkKeepWSAlive.CheckedChanged += new System.EventHandler(this.chkKeepWSAlive_CheckedChanged);
             // 
-            // columnHeader1
+            // restartApplicationToolStripMenuItem1
             // 
-            this.columnHeader1.Text = "Action";
-            this.columnHeader1.Width = 578;
+            this.restartApplicationToolStripMenuItem1.Name = "restartApplicationToolStripMenuItem1";
+            this.restartApplicationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.restartApplicationToolStripMenuItem1.Text = "Restart Application";
+            this.restartApplicationToolStripMenuItem1.Click += new System.EventHandler(this.restartApplicationToolStripMenuItem1_Click);
             // 
-            // columnHeader2
+            // setDisplayModeToolStripMenuItem
             // 
-            this.columnHeader2.Text = "Last Run";
-            this.columnHeader2.Width = 192;
+            this.setDisplayModeToolStripMenuItem.Name = "setDisplayModeToolStripMenuItem";
+            this.setDisplayModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setDisplayModeToolStripMenuItem.Text = "Set Display Mode";
+            this.setDisplayModeToolStripMenuItem.Click += new System.EventHandler(this.setDisplayModeToolStripMenuItem_Click);
             // 
-            // contextMenuStrip2
-            // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshToolStripMenuItem,
-            this.deleteToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(114, 48);
-            // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -202,9 +241,10 @@
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "UsbEvent";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Main_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -232,5 +272,9 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addAnotherEventToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restartApplicationToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem setDisplayModeToolStripMenuItem;
     }
 }

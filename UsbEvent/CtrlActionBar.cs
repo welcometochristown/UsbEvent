@@ -13,6 +13,11 @@ namespace UsbActioner
 {
     public partial class CtrlActionBar : UserControl
     {
+        public CtrlActionBar()
+        {
+            InitializeComponent();
+        }
+
         public DeviceEventType Actions
         {
             get
@@ -29,15 +34,12 @@ namespace UsbActioner
             }
             set
             {
-                chkAdded.Checked = ((value & DeviceEventType.CREATION) == DeviceEventType.CREATION);
-                chkRemoved.Checked = ((value & DeviceEventType.DELETION) == DeviceEventType.DELETION);
+                 chkAdded.Checked = ((value & DeviceEventType.CREATION) == DeviceEventType.CREATION);
+                 chkRemoved.Checked = ((value & DeviceEventType.DELETION) == DeviceEventType.DELETION);
             }
         }
 
-        public CtrlActionBar()
-        {
-            InitializeComponent();
-        }
+
     }
 
 
