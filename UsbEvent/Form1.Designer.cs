@@ -31,17 +31,23 @@
             this.components = new System.ComponentModel.Container();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listDevices = new System.Windows.Forms.ListView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.restartApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.listActions = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.chkKeepWSAlive = new System.Windows.Forms.CheckBox();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -56,6 +62,7 @@
             // 
             // btnStop
             // 
+            this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(93, 12);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
@@ -64,17 +71,17 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // listView1
+            // listDevices
             // 
-            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(12, 66);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(776, 180);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
+            this.listDevices.ContextMenuStrip = this.contextMenuStrip1;
+            this.listDevices.HideSelection = false;
+            this.listDevices.Location = new System.Drawing.Point(12, 66);
+            this.listDevices.MultiSelect = false;
+            this.listDevices.Name = "listDevices";
+            this.listDevices.Size = new System.Drawing.Size(776, 180);
+            this.listDevices.TabIndex = 1;
+            this.listDevices.UseCompatibleStateImageBehavior = false;
+            this.listDevices.View = System.Windows.Forms.View.List;
             // 
             // contextMenuStrip1
             // 
@@ -114,15 +121,19 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(42, 17);
             this.toolStripStatusLabel1.Text = "Ready.";
             // 
-            // listView2
+            // listActions
             // 
-            this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(12, 252);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(776, 194);
-            this.listView2.TabIndex = 1;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.List;
+            this.listActions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.listActions.ContextMenuStrip = this.contextMenuStrip2;
+            this.listActions.HideSelection = false;
+            this.listActions.Location = new System.Drawing.Point(12, 252);
+            this.listActions.Name = "listActions";
+            this.listActions.Size = new System.Drawing.Size(776, 194);
+            this.listActions.TabIndex = 1;
+            this.listActions.UseCompatibleStateImageBehavior = false;
+            this.listActions.View = System.Windows.Forms.View.Details;
             // 
             // label1
             // 
@@ -137,6 +148,8 @@
             // 
             this.chkKeepWSAlive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkKeepWSAlive.AutoSize = true;
+            this.chkKeepWSAlive.Checked = true;
+            this.chkKeepWSAlive.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkKeepWSAlive.Location = new System.Drawing.Point(634, 12);
             this.chkKeepWSAlive.Name = "chkKeepWSAlive";
             this.chkKeepWSAlive.Size = new System.Drawing.Size(155, 17);
@@ -144,16 +157,48 @@
             this.chkKeepWSAlive.Text = "Keep Workstation Awake";
             this.chkKeepWSAlive.UseVisualStyleBackColor = true;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Action";
+            this.columnHeader1.Width = 578;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Last Run";
+            this.columnHeader2.Width = 192;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(114, 48);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(801, 478);
             this.Controls.Add(this.chkKeepWSAlive);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listDevices);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.listActions);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -163,6 +208,7 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,14 +218,19 @@
 
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listDevices;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView listActions;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkKeepWSAlive;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem restartApplicationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeScreenToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }

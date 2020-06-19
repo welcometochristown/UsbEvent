@@ -16,6 +16,7 @@ namespace UsbActioner.USB
         public UsbDevice device;
         public string event_name;
 
+
         public DeviceEventType event_type
         {
             get

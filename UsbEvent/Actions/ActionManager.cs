@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static UsbActioner.Actions.EventAction;
 
 namespace UsbActioner.Actions
 {
@@ -10,7 +13,7 @@ namespace UsbActioner.Actions
     {
         public const string FILENAME = "amgr.json";
 
-        private static List<EventAction> _actions;
+        private static List<EventAction> _actions = new List<EventAction>();
         public static IEnumerable<EventAction> Actions
         {
             get
@@ -19,9 +22,9 @@ namespace UsbActioner.Actions
             }
         }
 
-        static ActionManager()
+        public static void Init()
         {
-            _actions = new List<EventAction>();
+            LoadFromFile();
         }
 
         public static void Add(EventAction e)
@@ -30,9 +33,26 @@ namespace UsbActioner.Actions
             SaveToFile();
         }
 
+        public static void LoadFromFile(string filename = FILENAME)
+        {
+            try
+            {
+                var result = FileOperations.FileOperation.LoadObject<EventActionCollectionWrapper>(filename);
+
+                if(result != null)
+                    _actions = result.UnWrap().ToList();
+            }
+            catch (FileNotFoundException)
+            { }
+            catch (DirectoryNotFoundException)
+            { }
+            if (_actions == null)
+                _actions = new List<EventAction>();
+        }
+
         public static void SaveToFile(string filename = FILENAME)
         {
-            FileOperations.FileOperation.SaveContent(_actions, filename);
+            FileOperations.FileOperation.SaveContent(EventActionCollectionWrapper.Wrap(_actions), filename);
         }
 
         public static void AddRange(IEnumerable<EventAction> e)
@@ -44,11 +64,13 @@ namespace UsbActioner.Actions
         public static void Remove(EventAction e)
         {
             _actions.Remove(e);
+            SaveToFile();
         }
 
         public static void RemoveAt(int index)
         {
             _actions.RemoveAt(index);
+            SaveToFile();
         }
 
     }

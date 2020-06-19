@@ -72,7 +72,7 @@ namespace UsbActioner.USB
                 }
             };
 
-            evnt.device.last_event = evnt;
+            evnt.device.last_event = evnt.event_type;
             NewUsbEvent?.Invoke(evnt);
         }
 

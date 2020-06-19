@@ -47,7 +47,7 @@ namespace UsbActioner.USB
             var device = _devices.SingleOrDefault(n => n.Equals(e.device));
 
             if (device != null)
-                device.last_event = e;
+                device.last_event = e.event_type;
             else
                 _devices.Add(e.device);
         }

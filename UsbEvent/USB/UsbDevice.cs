@@ -11,11 +11,18 @@ namespace UsbActioner.USB
         public string device_name;
         public string device_guid;
 
-        public UsbEvent last_event;
+        public UsbEvent.DeviceEventType last_event;
 
         public override bool Equals(object obj)
         {
             var u = obj as UsbDevice;
+
+            if (u == null)
+                return false;
+
+            if ((u.device_guid == null && device_guid == null) && (u.device_name == null && device_name == null))
+                return true;
+
             return u.device_guid.Equals(device_guid) && u.device_name.Equals(device_name);
         }
 

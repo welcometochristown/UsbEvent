@@ -16,10 +16,13 @@ namespace UsbActioner.Actions
 
             foreach (var a in actions_to_execute)
             {
-                tasks.Add(new Task(() =>
+                var task = Task.Run(() =>
                 {
+                    a.LastRun = DateTime.Now;
                     a.Execute();
-                }));
+                });
+                
+                tasks.Add(task);
             }
 
            await Task.WhenAll(tasks.ToArray());
