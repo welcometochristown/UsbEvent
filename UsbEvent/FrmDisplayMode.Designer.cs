@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDisplayMode));
             this.rdoInternal = new System.Windows.Forms.RadioButton();
             this.rdoExternal = new System.Windows.Forms.RadioButton();
             this.rdoExtend = new System.Windows.Forms.RadioButton();
@@ -110,6 +111,7 @@
             this.Controls.Add(this.rdoExternal);
             this.Controls.Add(this.rdoInternal);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmDisplayMode";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

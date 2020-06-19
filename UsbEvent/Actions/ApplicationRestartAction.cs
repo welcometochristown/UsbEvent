@@ -14,10 +14,6 @@ namespace UsbActioner.Actions
         public string ApplicationProcessName { get; set; }
         public ProcessWindowStyle WindowStyle { get; set; }
 
-        public ApplicationRestartAction()
-        {
-        }
-
         private void RestartProcess(string processname)
         {
             var processes = Process.GetProcessesByName(this.ApplicationProcessName);

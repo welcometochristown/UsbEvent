@@ -30,6 +30,17 @@ namespace UsbActioner
             listener.NewUsbEvent += Listener_NewUsbEvent;
         }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["ListenOnStart"] == "true")
+                btnStart.PerformClick();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            btnStop.PerformClick();
+        }
+
         private void Listener_NewUsbEvent(UsbEvent e)
         {
             AddDeviceFromEvent(e);
@@ -107,6 +118,7 @@ namespace UsbActioner
             }
         }
 
+
         private void btnStop_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = true;
@@ -119,10 +131,7 @@ namespace UsbActioner
             PowerHelper.ResetSystemDefault();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            btnStop.PerformClick();
-        }
+
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
@@ -186,14 +195,9 @@ namespace UsbActioner
                 ActionManager.Add(action);
                 RefreshActions();
             }
-
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-            if (ConfigurationManager.AppSettings["ListenOnStart"] == "true")
-                btnStart.PerformClick();
-        }
+
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {

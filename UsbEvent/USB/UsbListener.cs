@@ -7,6 +7,7 @@ using System.Management;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace UsbActioner.USB
 {
@@ -15,6 +16,7 @@ namespace UsbActioner.USB
        public event Action<UsbEvent> NewUsbEvent;
 
         private ManagementEventWatcher watcher;
+
         private bool isListening;
 
         public async void StartListening()
