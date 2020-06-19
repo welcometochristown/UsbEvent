@@ -8,26 +8,48 @@ namespace UsbActioner.Actions
 {
     public static class ActionManager
     {
-        public static readonly IEnumerable<EventAction> Actions;
+        public const string FILENAME = "amgr.json";
+
+        private static List<EventAction> _actions;
+        public static IEnumerable<EventAction> Actions
+        {
+            get
+            {
+                return _actions;
+            }
+        }
 
         static ActionManager()
         {
-            Actions = new List<EventAction>();
+            _actions = new List<EventAction>();
         }
 
-        static void Add(EventAction e)
+        public static void Add(EventAction e)
         {
-
+            _actions.Add(e);
+            SaveToFile();
         }
 
-        static void Remove(EventAction e)
+        public static void SaveToFile(string filename = FILENAME)
         {
-
+            FileOperations.FileOperation.SaveContent(_actions, filename);
         }
 
-        static void Remove(int index)
+        public static void AddRange(IEnumerable<EventAction> e)
         {
-
+            _actions.AddRange(e);
+            SaveToFile();
         }
+
+        public static void Remove(EventAction e)
+        {
+            _actions.Remove(e);
+        }
+
+        public static void RemoveAt(int index)
+        {
+            _actions.RemoveAt(index);
+        }
+
     }
 }

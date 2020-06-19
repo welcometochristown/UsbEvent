@@ -14,9 +14,7 @@ namespace UsbActioner
 {
     public partial class Form1 : Form
     {
-        UsbListener listener;
-        List<UsbDevice> usbDevices = new List<UsbDevice>();
-        List<EventAction> actions = new List<EventAction>();
+        private UsbListener listener;
 
         public Form1()
         {
@@ -32,33 +30,20 @@ namespace UsbActioner
             ActionEvents(e);
         }
 
-        private void ActionEvents(UsbEvent e)
+        private async void ActionEvents(UsbEvent e)
         {
-            var actions_to_execute = actions.Where(n => n.device.Equals(e.device) && n.HasType(e.event_type));
-
-            foreach (var a in actions_to_execute)
-            {
-                Task.Run(() =>
-                {
-                    a.Execute();
-                });
-            }
+            await ActionManagerExecutor.ActionEvents(e);
         }
 
         private void AddDeviceFromEvent(UsbEvent e)
         {
-            var device = usbDevices.SingleOrDefault(n => n.Equals(e.device));
-
-            if (device != null)
-                device.last_event = e;
-            else
-                usbDevices.Add(e.device);
+            DeviceManager.AddDeviceFromEvent(e);
         }
 
         private void RefreshActions()
         {
             listView2.Items.Clear();
-            listView2.Items.AddRange(actions.Select(n => new ListViewItem(n.ToString()) { Tag = n }).ToArray());
+            listView2.Items.AddRange(ActionManager.Actions.Select(n => new ListViewItem(n.ToString()) { Tag = n }).ToArray());
         }
 
         private void RefreshUSBEventList()
@@ -74,7 +59,7 @@ namespace UsbActioner
             }
 
             listView1.Items.Clear();
-            listView1.Items.AddRange(usbDevices.Select(n => new ListViewItem(n.ToString()) { Tag = n, BackColor = getBackColor(n.last_event.event_name)}).ToArray());
+            listView1.Items.AddRange(DeviceManager.Devices.Select(n => new ListViewItem(n.ToString()) { Tag = n, BackColor = getBackColor(n.last_event.event_name)}).ToArray());
             listView1.Refresh();
         }
 
@@ -142,7 +127,7 @@ namespace UsbActioner
             FrmApplicationRestart frm = new FrmApplicationRestart();
             if(frm.ShowDialog() == DialogResult.OK)
             {
-                actions.Add(new ApplicationRestart(frm.Application_Name)
+                ActionManager.Add(new ApplicationRestart(frm.Application_Name)
                 {
                     WindowStyle = frm.Window_Style,
                     Actions = frm.DeviceActions, 
