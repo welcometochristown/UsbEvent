@@ -83,6 +83,7 @@
     <Compile Include="CtrlActionBar.Designer.cs">
       <DependentUpon>CtrlActionBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="FileOperations\FileOperation.cs" />
     <Compile Include="FrmApplicationRestart.cs">
       <SubType>Form</SubType>

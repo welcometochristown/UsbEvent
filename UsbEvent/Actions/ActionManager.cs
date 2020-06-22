@@ -22,11 +22,6 @@ namespace UsbActioner.Actions
             }
         }
 
-        public static void Init()
-        {
-            LoadActionsFromFile();
-        }
-
         public static void Add(EventAction e)
         {
             _actions.Add(e);

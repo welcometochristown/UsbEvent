@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace UsbActioner.USB
         public string device_name;
         public string device_guid;
 
+        [JsonIgnore]
         public UsbEvent.DeviceEventType last_event;
 
         public override bool Equals(object obj)

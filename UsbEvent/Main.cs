@@ -11,25 +11,31 @@ using UsbActioner.Actions;
 using System.Threading.Tasks;
 using static UsbActioner.USB.UsbEvent;
 using System.Configuration;
+using UsbActioner.Extensions;
 
 namespace UsbActioner
 {
     public partial class Main : Form
     {
         private UsbListener listener = new UsbListener();
-        private Queue<UsbEvent> event_queue = new Queue<UsbEvent>();
-        private bool deQueuingEvents = false;
 
         public Main()
         {
             InitializeComponent();
+            InitialiseApplication();
+        }
 
-            ActionManager.Init();
+        private void InitialiseApplication()
+        {
+            ActionManager.LoadActionsFromFile();
+            DeviceManager.LoadDevicesFromFile();
 
-            chkKeepWSAlive.Checked = Properties.Settings.Default.KeepAwake;
             RefreshActions();
+            RefreshUsbDevices();
 
             listener.NewUsbEvent += Listener_NewUsbEvent;
+            chkKeepWSAlive.Checked = Properties.Settings.Default.KeepAwake;
+
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -45,31 +51,11 @@ namespace UsbActioner
 
         private void Listener_NewUsbEvent(UsbEvent e)
         {
-            event_queue.Enqueue(e);
-            ProcessQueue();
-        }
+            AddDeviceFromEvent(e);
+            ActionEvents(e);
 
-        private void ProcessQueue()
-        {
-            if (deQueuingEvents)
-                return;
-
-            deQueuingEvents = true;
-
-            while(event_queue.Any())
-            {
-                var e = event_queue.Dequeue();
-
-                AddDeviceFromEvent(e);
-                ActionEvents(e);
-
-                System.Threading.Thread.Sleep(1000);
-            }
-
-            Invoke(new Action(() => RefreshUSBEventList()));
+            Invoke(new Action(() => RefreshUsbDevices()));
             Invoke(new Action(() => RefreshActions()));
-
-            deQueuingEvents = false;
         }
 
         private async void ActionEvents(UsbEvent e)
@@ -85,12 +71,12 @@ namespace UsbActioner
         private void RefreshActions()
         {
             listActions.Items.Clear();
-            listActions.Items.AddRange(CreateActionListItems().ToArray());
+            listActions.Items.AddRange(CreateActionListItems(ActionManager.Actions).ToArray());
         }
 
-        private IEnumerable<ListViewItem> CreateActionListItems()
+        private IEnumerable<ListViewItem> CreateActionListItems(IEnumerable<EventAction> actions)
         {
-            foreach (var i in ActionManager.Actions)
+            foreach (var i in actions)
             {
                 var item = new ListViewItem(i.ToString()){  Tag = i };
 
@@ -98,9 +84,23 @@ namespace UsbActioner
 
                 yield return item;
             }
-       }
+        }
 
-        private void RefreshUSBEventList()
+        private void RefreshUsbDevices()
+        {
+            listDevices.Sync(CreateDeviceListItems(DeviceManager.Devices));
+            UpdateDeviceBackColors();
+        }
+
+        private IEnumerable<ListViewItem> CreateDeviceListItems(IEnumerable<UsbDevice> actions)
+        {
+            foreach (var i in actions)
+            {
+                yield return new ListViewItem(i.ToString()) { Tag = i, Name = i.device_guid };
+            }
+        }
+
+        private void UpdateDeviceBackColors()
         {
             Color getBackColor(DeviceEventType event_name)
             {
@@ -112,9 +112,15 @@ namespace UsbActioner
                 };
             }
 
-            listDevices.Items.Clear();
-            listDevices.Items.AddRange(DeviceManager.Devices.Select(n => new ListViewItem(n.ToString()) { Tag = n, BackColor = getBackColor(n.last_event)}).ToArray());
-            listDevices.Refresh();
+            foreach (var i in listDevices.Items.Cast<ListViewItem>())
+            {
+                var device = i.Tag as UsbDevice;
+
+                if (device == null)
+                    continue;
+
+                i.BackColor = getBackColor(device.last_event);
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -132,6 +138,7 @@ namespace UsbActioner
                 {
                     PowerHelper.ForceSystemAwake();
                 }
+
             }catch(Exception)
             {
                 btnStart.Enabled = true;
@@ -153,8 +160,6 @@ namespace UsbActioner
             PowerHelper.ResetSystemDefault();
         }
 
-
-
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             if(listDevices.SelectedItems.Count == 0)
@@ -174,6 +179,9 @@ namespace UsbActioner
 
         private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
             var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
             var action = new ApplicationRestartAction() { device = device };
 
@@ -193,12 +201,13 @@ namespace UsbActioner
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(listActions.SelectedItems.Count > 0)
-            {
-                var ae = listActions.SelectedItems[0].Tag as EventAction;
-                ActionManager.Remove(ae);
-                RefreshActions();
-            }
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            var ae = listActions.SelectedItems[0].Tag as EventAction;
+            ActionManager.Remove(ae);
+            RefreshActions();
+            
         }
 
         private void chkKeepWSAlive_CheckedChanged(object sender, EventArgs e)
@@ -209,6 +218,9 @@ namespace UsbActioner
 
         private void changeScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
             var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
             var action = new DisplayModeAction { device = device };
 
@@ -220,26 +232,25 @@ namespace UsbActioner
         }
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listActions.SelectedItems.Count > 0)
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            var ae = listActions.SelectedItems[0].Tag as EventAction;
+
+            if (ae is ApplicationRestartAction)
             {
-                var ae = listActions.SelectedItems[0].Tag as EventAction;
-
-                if (ae is ApplicationRestartAction)
-                {
-                    FrmApplicationRestart.EditAction(ae as ApplicationRestartAction);
-                    ActionManager.SaveActionsToFile();
-                    RefreshActions();
-                }
-
-                if (ae is DisplayModeAction)
-                {
-                    FrmDisplayMode.EditAction(ae as DisplayModeAction);
-                    ActionManager.SaveActionsToFile();
-                    RefreshActions();
-                }
-
-                
+                FrmApplicationRestart.EditAction(ae as ApplicationRestartAction);
+                ActionManager.SaveActionsToFile();
+                RefreshActions();
             }
+
+            if (ae is DisplayModeAction)
+            {
+                FrmDisplayMode.EditAction(ae as DisplayModeAction);
+                ActionManager.SaveActionsToFile();
+                RefreshActions();
+            }
+
         }
 
         private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
@@ -249,6 +260,9 @@ namespace UsbActioner
 
         private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
             var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
             var action = new ApplicationRestartAction() { device = device };
 
@@ -261,6 +275,9 @@ namespace UsbActioner
 
         private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
             var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
             var action = new DisplayModeAction { device = device };
 
@@ -273,6 +290,9 @@ namespace UsbActioner
 
         private void forceExecuteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
             var action = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction);
 
             action?.Execute();
