@@ -17,6 +17,8 @@ namespace UsbActioner
     public partial class Main : Form
     {
         private UsbListener listener = new UsbListener();
+        private Queue<UsbEvent> event_queue = new Queue<UsbEvent>();
+        private bool deQueuingEvents = false;
 
         public Main()
         {
@@ -43,11 +45,31 @@ namespace UsbActioner
 
         private void Listener_NewUsbEvent(UsbEvent e)
         {
-            AddDeviceFromEvent(e);
-            ActionEvents(e);
+            event_queue.Enqueue(e);
+            ProcessQueue();
+        }
+
+        private void ProcessQueue()
+        {
+            if (deQueuingEvents)
+                return;
+
+            deQueuingEvents = true;
+
+            while(event_queue.Any())
+            {
+                var e = event_queue.Dequeue();
+
+                AddDeviceFromEvent(e);
+                ActionEvents(e);
+
+                System.Threading.Thread.Sleep(1000);
+            }
 
             Invoke(new Action(() => RefreshUSBEventList()));
             Invoke(new Action(() => RefreshActions()));
+
+            deQueuingEvents = false;
         }
 
         private async void ActionEvents(UsbEvent e)
@@ -164,7 +186,7 @@ namespace UsbActioner
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActionManager.LoadFromFile();
+            ActionManager.LoadActionsFromFile();
 
             RefreshActions();
         }
@@ -196,9 +218,6 @@ namespace UsbActioner
                 RefreshActions();
             }
         }
-
-
-
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listActions.SelectedItems.Count > 0)
@@ -206,12 +225,20 @@ namespace UsbActioner
                 var ae = listActions.SelectedItems[0].Tag as EventAction;
 
                 if (ae is ApplicationRestartAction)
+                {
                     FrmApplicationRestart.EditAction(ae as ApplicationRestartAction);
+                    ActionManager.SaveActionsToFile();
+                    RefreshActions();
+                }
 
                 if (ae is DisplayModeAction)
+                {
                     FrmDisplayMode.EditAction(ae as DisplayModeAction);
+                    ActionManager.SaveActionsToFile();
+                    RefreshActions();
+                }
 
-                RefreshActions();
+                
             }
         }
 

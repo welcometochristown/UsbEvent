@@ -10,7 +10,7 @@ namespace UsbActioner.USB
             NONE = 0x0,
             UNKNOWN = 0x1,
             CREATION = 0x2,
-            DELETION = 0x3
+            DELETION = 0x4
 
         }
         public UsbDevice device;

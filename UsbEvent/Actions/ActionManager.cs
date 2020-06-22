@@ -24,16 +24,16 @@ namespace UsbActioner.Actions
 
         public static void Init()
         {
-            LoadFromFile();
+            LoadActionsFromFile();
         }
 
         public static void Add(EventAction e)
         {
             _actions.Add(e);
-            SaveToFile();
+            SaveActionsToFile();
         }
 
-        public static void LoadFromFile(string filename = FILENAME)
+        public static void LoadActionsFromFile(string filename = FILENAME)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace UsbActioner.Actions
                 _actions = new List<EventAction>();
         }
 
-        public static void SaveToFile(string filename = FILENAME)
+        public static void SaveActionsToFile(string filename = FILENAME)
         {
             FileOperations.FileOperation.SaveContent(EventActionCollectionWrapper.Wrap(_actions), filename);
         }
@@ -58,19 +58,19 @@ namespace UsbActioner.Actions
         public static void AddRange(IEnumerable<EventAction> e)
         {
             _actions.AddRange(e);
-            SaveToFile();
+            SaveActionsToFile();
         }
 
         public static void Remove(EventAction e)
         {
             _actions.Remove(e);
-            SaveToFile();
+            SaveActionsToFile();
         }
 
         public static void RemoveAt(int index)
         {
             _actions.RemoveAt(index);
-            SaveToFile();
+            SaveActionsToFile();
         }
 
     }
