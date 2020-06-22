@@ -8,7 +8,7 @@ namespace UsbActioner.Actions
 {
     public class ActionManagerExecutor
     {
-        public static async Task ActionEvents(USB.UsbEvent e)
+        public static async Task ExecActions(USB.UsbEvent e)
         {
             var actions_to_execute = ActionManager.Actions.Where(n => n.device.Equals(e.device) && n.HasType(e.event_type));
 

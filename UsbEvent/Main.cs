@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using static UsbActioner.USB.UsbEvent;
 using System.Configuration;
 using UsbActioner.Extensions;
+using System.Diagnostics;
 
 namespace UsbActioner
 {
@@ -60,7 +61,7 @@ namespace UsbActioner
 
         private async void ActionEvents(UsbEvent e)
         {
-            await ActionManagerExecutor.ActionEvents(e);
+            await ActionManagerExecutor.ExecActions(e);
         }
 
         private void AddDeviceFromEvent(UsbEvent e)
@@ -296,6 +297,16 @@ namespace UsbActioner
             var action = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction);
 
             action?.Execute();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void openApplicationFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
         }
     }
 }
