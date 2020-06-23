@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using UsbActioner.Actions.Forms;
 
 namespace UsbActioner.Actions
 {
@@ -11,7 +13,7 @@ namespace UsbActioner.Actions
     {
         public override string Name => nameof(DisplayMode);
 
-        public DisplayModeOptionEnum DisplayMode;
+        public DisplayModeOptionEnum DisplayMode { get; set; }
 
         public enum DisplayModeOptionEnum
         {
@@ -46,15 +48,27 @@ namespace UsbActioner.Actions
 
         public override async Task Execute()
         {
-            await Task.Run(() =>
+            try
             {
-                SetDisplayMode(DisplayMode);
-            });
+                await Task.Run(() =>
+                {
+                    SetDisplayMode(DisplayMode);
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new ActionExecutionFailedException($"Failed to set display mode to {DisplayMode}", ex);
+            }
         }
 
         public override string ToString()
         {
             return $"{base.ToString()} | {DisplayMode.ToString()}";
+        }
+
+        public override DialogResult EditAction()
+        {
+            return FrmDisplayMode.EditAction(this);
         }
     }
 }

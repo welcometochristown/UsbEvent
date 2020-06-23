@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using UsbActioner.Actions.Forms;
 using UsbActioner.USB;
 
 namespace UsbActioner.Actions
@@ -16,7 +18,7 @@ namespace UsbActioner.Actions
 
         private void RestartProcess(string processname)
         {
-            var processes = Process.GetProcessesByName(this.ApplicationProcessName);
+            var processes = Process.GetProcessesByName(processname);
 
             if (!processes.Any())
                 return;
@@ -33,22 +35,33 @@ namespace UsbActioner.Actions
             startInfo.WindowStyle = WindowStyle;
             startInfo.UseShellExecute = true;
 
-            Process.Start(startInfo);
-            
+            Process.Start(startInfo);            
         }
 
         public override async Task Execute()
         {
            await Task.Run(() =>
             {
-                RestartProcess(ApplicationProcessName);
+                try
+                { 
+                    RestartProcess(ApplicationProcessName);
+                }
+                catch (Exception ex)
+                {
+                    throw new ActionExecutionFailedException($"Failed to restart {ApplicationProcessName}", ex);
+                }
             });
             
         }
 
         public override string ToString()
         {
-            return $"{base.ToString()} | {ApplicationProcessName} ({WindowStyle.ToString()})";
+            return $"{base.ToString()} | {ApplicationProcessName} ({WindowStyle})";
+        }
+
+        public override DialogResult EditAction()
+        {
+            return FrmApplicationRestart.EditAction(this);
         }
     }
 }

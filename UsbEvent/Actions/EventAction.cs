@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using UsbActioner.Actions.Forms;
 using UsbActioner.USB;
 using static UsbActioner.USB.UsbEvent;
 
@@ -41,6 +43,8 @@ namespace UsbActioner.Actions
 
             return $"{device.device_name} | {string.Join(",", action_list)} | {Name}";
         }
+
+        public abstract DialogResult EditAction();
 
         public class EventActionCollectionWrapper
         {

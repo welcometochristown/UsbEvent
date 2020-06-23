@@ -1,4 +1,4 @@
-﻿namespace UsbActioner
+﻿namespace UsbActioner.Actions.Forms
 {
     partial class FrmDisplayMode
     {
@@ -33,8 +33,6 @@
             this.rdoExternal = new System.Windows.Forms.RadioButton();
             this.rdoExtend = new System.Windows.Forms.RadioButton();
             this.rdoDuplicate = new System.Windows.Forms.RadioButton();
-            this.ctrlActionBar1 = new UsbActioner.CtrlActionBar();
-            this.btnDone = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // rdoInternal
@@ -79,33 +77,11 @@
             this.rdoDuplicate.Text = "Duplicate";
             this.rdoDuplicate.UseVisualStyleBackColor = true;
             // 
-            // ctrlActionBar1
-            // 
-            this.ctrlActionBar1.Actions = UsbActioner.USB.UsbEvent.DeviceEventType.NONE;
-            this.ctrlActionBar1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ctrlActionBar1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlActionBar1.Location = new System.Drawing.Point(5, 5);
-            this.ctrlActionBar1.Name = "ctrlActionBar1";
-            this.ctrlActionBar1.Size = new System.Drawing.Size(348, 21);
-            this.ctrlActionBar1.TabIndex = 6;
-            // 
-            // btnDone
-            // 
-            this.btnDone.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnDone.Location = new System.Drawing.Point(269, 88);
-            this.btnDone.Name = "btnDone";
-            this.btnDone.Size = new System.Drawing.Size(75, 23);
-            this.btnDone.TabIndex = 7;
-            this.btnDone.Text = "Done";
-            this.btnDone.UseVisualStyleBackColor = true;
-            // 
             // FrmDisplayMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 119);
-            this.Controls.Add(this.btnDone);
-            this.Controls.Add(this.ctrlActionBar1);
+            this.ClientSize = new System.Drawing.Size(444, 116);
             this.Controls.Add(this.rdoDuplicate);
             this.Controls.Add(this.rdoExtend);
             this.Controls.Add(this.rdoExternal);
@@ -118,6 +94,10 @@
             this.Text = "FrmDisplayMode";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmDisplayMode_FormClosing);
             this.Load += new System.EventHandler(this.FrmDisplayMode_Load);
+            this.Controls.SetChildIndex(this.rdoInternal, 0);
+            this.Controls.SetChildIndex(this.rdoExternal, 0);
+            this.Controls.SetChildIndex(this.rdoExtend, 0);
+            this.Controls.SetChildIndex(this.rdoDuplicate, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -129,7 +109,5 @@
         private System.Windows.Forms.RadioButton rdoExternal;
         private System.Windows.Forms.RadioButton rdoExtend;
         private System.Windows.Forms.RadioButton rdoDuplicate;
-        private CtrlActionBar ctrlActionBar1;
-        private System.Windows.Forms.Button btnDone;
     }
 }

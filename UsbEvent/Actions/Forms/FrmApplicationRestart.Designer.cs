@@ -1,4 +1,4 @@
-﻿namespace UsbActioner
+﻿namespace UsbActioner.Actions.Forms
 {
     partial class FrmApplicationRestart
     {
@@ -31,10 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmApplicationRestart));
             this.txtProcessName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnDone = new System.Windows.Forms.Button();
             this.cboStartMode = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.ctrlActionBar1 = new UsbActioner.CtrlActionBar();
             this.SuspendLayout();
             // 
             // txtProcessName
@@ -52,16 +50,6 @@
             this.label1.Size = new System.Drawing.Size(77, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Process Name";
-            // 
-            // btnDone
-            // 
-            this.btnDone.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnDone.Location = new System.Drawing.Point(374, 82);
-            this.btnDone.Name = "btnDone";
-            this.btnDone.Size = new System.Drawing.Size(75, 23);
-            this.btnDone.TabIndex = 3;
-            this.btnDone.Text = "Done";
-            this.btnDone.UseVisualStyleBackColor = true;
             // 
             // cboStartMode
             // 
@@ -86,24 +74,12 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Window Mode";
             // 
-            // ctrlActionBar1
-            // 
-            this.ctrlActionBar1.Actions = UsbActioner.USB.UsbEvent.DeviceEventType.NONE;
-            this.ctrlActionBar1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ctrlActionBar1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlActionBar1.Location = new System.Drawing.Point(5, 5);
-            this.ctrlActionBar1.Name = "ctrlActionBar1";
-            this.ctrlActionBar1.Size = new System.Drawing.Size(451, 21);
-            this.ctrlActionBar1.TabIndex = 5;
-            // 
             // FrmApplicationRestart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 115);
-            this.Controls.Add(this.ctrlActionBar1);
+            this.ClientSize = new System.Drawing.Size(584, 141);
             this.Controls.Add(this.cboStartMode);
-            this.Controls.Add(this.btnDone);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtProcessName);
@@ -115,6 +91,10 @@
             this.Text = "Application Restart";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmApplicationRestart_FormClosing);
             this.Load += new System.EventHandler(this.FrmApplicationRestart_Load);
+            this.Controls.SetChildIndex(this.txtProcessName, 0);
+            this.Controls.SetChildIndex(this.label1, 0);
+            this.Controls.SetChildIndex(this.label2, 0);
+            this.Controls.SetChildIndex(this.cboStartMode, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,9 +104,7 @@
 
         private System.Windows.Forms.TextBox txtProcessName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnDone;
         private System.Windows.Forms.ComboBox cboStartMode;
         private System.Windows.Forms.Label label2;
-        private CtrlActionBar ctrlActionBar1;
     }
 }

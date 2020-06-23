@@ -11,12 +11,12 @@ using UsbActioner.Actions;
 using static UsbActioner.Actions.DisplayModeAction;
 using static UsbActioner.USB.UsbEvent;
 
-namespace UsbActioner
+namespace UsbActioner.Actions.Forms
 {
-    public partial class FrmDisplayMode : Form
+    public partial class FrmDisplayMode : FrmEventActionBase
     {
         public DisplayModeOptionEnum DisplayModeOption { get; set; } = DisplayModeOptionEnum.Internal;
-        public DeviceEventType DeviceActions { get; set; } = DeviceEventType.NONE;
+
 
         public RadioButton [] buttons;
 
@@ -32,7 +32,6 @@ namespace UsbActioner
             {
                 rb.Checked = (rb.Text == DisplayModeOption.ToString());
             }
-            ctrlActionBar1.Actions = this.DeviceActions;
 
         }
 
@@ -46,7 +45,6 @@ namespace UsbActioner
                     break;
                 }
             }
-            this.DeviceActions = ctrlActionBar1.Actions;
         }
 
         public static DialogResult EditAction(DisplayModeAction action)

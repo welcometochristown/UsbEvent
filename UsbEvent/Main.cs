@@ -177,22 +177,6 @@ namespace UsbActioner
                 return;
             }
         }
-
-        private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
-            var action = new ApplicationRestartAction() { device = device };
-
-            if (FrmApplicationRestart.EditAction(action) == DialogResult.OK)
-            {
-                ActionManager.Add(action);
-                RefreshActions();
-            }
-        }
-
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ActionManager.LoadActionsFromFile();
@@ -200,93 +184,10 @@ namespace UsbActioner
             RefreshActions();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var ae = listActions.SelectedItems[0].Tag as EventAction;
-            ActionManager.Remove(ae);
-            RefreshActions();
-            
-        }
-
         private void chkKeepWSAlive_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.KeepAwake = chkKeepWSAlive.Checked;
             Properties.Settings.Default.Save();
-        }
-
-        private void changeScreenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var device = (listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice;
-            var action = new DisplayModeAction { device = device };
-
-            if (FrmDisplayMode.EditAction(action) == DialogResult.OK)
-            {
-                ActionManager.Add(action);
-                RefreshActions();
-            }
-        }
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var ae = listActions.SelectedItems[0].Tag as EventAction;
-
-            if (ae is ApplicationRestartAction)
-            {
-                FrmApplicationRestart.EditAction(ae as ApplicationRestartAction);
-                ActionManager.SaveActionsToFile();
-                RefreshActions();
-            }
-
-            if (ae is DisplayModeAction)
-            {
-                FrmDisplayMode.EditAction(ae as DisplayModeAction);
-                ActionManager.SaveActionsToFile();
-                RefreshActions();
-            }
-
-        }
-
-        private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
-            var action = new ApplicationRestartAction() { device = device };
-
-            if (FrmApplicationRestart.EditAction(action) == DialogResult.OK)
-            {
-                ActionManager.Add(action);
-                RefreshActions();
-            }
-        }
-
-        private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var device = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction).device;
-            var action = new DisplayModeAction { device = device };
-
-            if (FrmDisplayMode.EditAction(action) == DialogResult.OK)
-            {
-                ActionManager.Add(action);
-                RefreshActions();
-            }
         }
 
         private void forceExecuteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -307,6 +208,101 @@ namespace UsbActioner
         private void openApplicationFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            var ae = listActions.SelectedItems[0].Tag as EventAction;
+            ActionManager.Remove(ae);
+            RefreshActions();
+        }
+
+        private void ActionCreate<T>(UsbDevice device) where T : EventAction, new ()
+        {
+            var action = new T() { device = device };
+
+            if (action.EditAction() == DialogResult.OK)
+            { 
+                ActionManager.Add(action);
+                RefreshActions();
+            }
+        }
+
+        private void ActionEdit<T>(T action) where T : EventAction
+        {
+            if (action.EditAction() == DialogResult.OK)
+            {
+                ActionManager.SaveActionsToFile();
+                RefreshActions();
+            }
+        }
+
+
+
+
+
+        private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<ApplicationRestartAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+        }
+
+        private void changeScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<DisplayModeAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+        }
+
+        private void batchFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<BatchFileAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+        }
+
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listActions.SelectedItems.Count == 0)
+                return;
+
+            ActionEdit(listActions.SelectedItems[0].Tag as EventAction);
+        }
+
+
+
+        private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listActions.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<ApplicationRestartAction>((listActions.SelectedItems[0].Tag as EventAction).device);
+
+        }
+
+        private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listActions.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<DisplayModeAction>((listActions.SelectedItems[0].Tag as EventAction).device);
+        }
+
+        private void batchFileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listActions.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<BatchFileAction>((listActions.SelectedItems[0].Tag as EventAction).device);
+
         }
     }
 }

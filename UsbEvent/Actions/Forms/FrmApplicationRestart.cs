@@ -4,13 +4,12 @@ using System.Windows.Forms;
 using UsbActioner.Actions;
 using static UsbActioner.USB.UsbEvent;
 
-namespace UsbActioner
+namespace UsbActioner.Actions.Forms
 {
-    public partial class FrmApplicationRestart : Form
+    public partial class FrmApplicationRestart : FrmEventActionBase
     {
         public string Application_Name { get; set; }
         public ProcessWindowStyle Window_Style { get; set; } = ProcessWindowStyle.Normal;
-        public DeviceEventType DeviceActions { get; set; } = DeviceEventType.NONE;
 
         public FrmApplicationRestart()
         {
@@ -21,14 +20,12 @@ namespace UsbActioner
         {
             this.Application_Name = txtProcessName.Text;
             this.Window_Style = (ProcessWindowStyle)Enum.Parse(typeof(ProcessWindowStyle), cboStartMode.Text);
-            this.DeviceActions = ctrlActionBar1.Actions;
         }
 
         private void FrmApplicationRestart_Load(object sender, EventArgs e)
         {
             txtProcessName.Text = this.Application_Name;
             cboStartMode.Text = this.Window_Style.ToString();
-            ctrlActionBar1.Actions = this.DeviceActions;
         }
 
         public static DialogResult EditAction(ApplicationRestartAction action)

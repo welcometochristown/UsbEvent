@@ -14,7 +14,7 @@ namespace UsbActioner
     class Program
     {
     
-
+        [STAThreadAttribute]
         static void Main(string[] args)
         {
             try
@@ -26,7 +26,6 @@ namespace UsbActioner
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.ReadKey();
             }
             finally
             {
