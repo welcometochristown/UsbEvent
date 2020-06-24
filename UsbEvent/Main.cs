@@ -190,14 +190,9 @@ namespace UsbActioner
             Properties.Settings.Default.Save();
         }
 
-        private void forceExecuteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openApplicationFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            var action = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction);
-
-            action?.Execute();
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -205,19 +200,19 @@ namespace UsbActioner
             Close();
         }
 
-        private void openApplicationFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void forceExecuteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listDevices.SelectedItems.Count == 0)
+            if (listActions.SelectedItems.Count == 0)
                 return;
 
-            var ae = listActions.SelectedItems[0].Tag as EventAction;
-            ActionManager.Remove(ae);
-            RefreshActions();
+            var action = ((listActions.SelectedItems[0] as ListViewItem).Tag as EventAction);
+
+            action?.Execute();
+        }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
         }
 
         private void ActionCreate<T>(UsbDevice device) where T : EventAction, new ()
@@ -240,9 +235,15 @@ namespace UsbActioner
             }
         }
 
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
 
-
-
+            var ae = listActions.SelectedItems[0].Tag as EventAction;
+            ActionManager.Remove(ae);
+            RefreshActions();
+        }
 
         private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -268,7 +269,6 @@ namespace UsbActioner
             ActionCreate<BatchFileAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
         }
 
-
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listActions.SelectedItems.Count == 0)
@@ -276,9 +276,6 @@ namespace UsbActioner
 
             ActionEdit(listActions.SelectedItems[0].Tag as EventAction);
         }
-
-
-
         private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (listActions.SelectedItems.Count == 0)
@@ -310,9 +307,6 @@ namespace UsbActioner
             Application.Exit();
         }
 
-        private void configToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-        }
+      
     }
 }
