@@ -75,7 +75,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\ActionExecutionFailedException.cs" />
+    <Compile Include="Exceptions\ActionExecutionFailedException.cs" />
     <Compile Include="Actions\ActionManager.cs" />
     <Compile Include="Actions\ActionManagerExecutor.cs" />
     <Compile Include="Actions\BatchFileAction.cs" />
@@ -91,10 +91,10 @@
     <Compile Include="Actions\Forms\FrmEventActionBase.Designer.cs">
       <DependentUpon>FrmEventActionBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="CtrlActionBar.cs">
+    <Compile Include="Actions\Forms\CtrlActionBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlActionBar.Designer.cs">
+    <Compile Include="Actions\Forms\CtrlActionBar.Designer.cs">
       <DependentUpon>CtrlActionBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Extensions.cs" />
@@ -137,12 +137,6 @@
     <Compile Include="USB\UsbListener.cs" />
     <Compile Include="USB\UsbDevice.cs" />
     <Compile Include="USB\UsbEvent.cs" />
-    <Compile Include="UserControl1.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utility\PowerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +154,7 @@
     <EmbeddedResource Include="Actions\Forms\FrmEventActionBase.resx">
       <DependentUpon>FrmEventActionBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CtrlActionBar.resx">
+    <EmbeddedResource Include="Actions\Forms\CtrlActionBar.resx">
       <DependentUpon>CtrlActionBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Actions\Forms\FrmApplicationRestart.resx">
@@ -184,6 +178,14 @@
     <None Include="Resources\usb.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\page_refresh.png" />
+    <None Include="Resources\monitor_go.png" />
+    <None Include="Resources\cog.png" />
+    <None Include="Resources\lightning.png" />
+    <None Include="Resources\application_edit.png" />
+    <None Include="Resources\application_delete.png" />
+    <None Include="Resources\arrow_refresh_small.png" />
+    <None Include="Resources\application_add.png" />
     <Content Include="usb.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

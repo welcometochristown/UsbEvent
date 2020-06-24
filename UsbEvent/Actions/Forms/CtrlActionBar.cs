@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static UsbActioner.USB.UsbEvent;
 
-namespace UsbActioner
+namespace UsbActioner.Actions.Forms
 {
     public partial class CtrlActionBar : UserControl
     {

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.btnDone = new System.Windows.Forms.Button();
-            this.ctrlActionBar1 = new UsbActioner.CtrlActionBar();
+            this.ctrlActionBar1 = new UsbActioner.Actions.Forms.CtrlActionBar();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();

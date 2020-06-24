@@ -1,4 +1,4 @@
-﻿namespace UsbActioner
+﻿namespace UsbActioner.Actions.Forms
 {
     partial class CtrlActionBar
     {

@@ -304,5 +304,15 @@ namespace UsbActioner
             ActionCreate<BatchFileAction>((listActions.SelectedItems[0].Tag as EventAction).device);
 
         }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+        }
     }
 }
