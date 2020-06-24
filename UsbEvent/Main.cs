@@ -36,7 +36,6 @@ namespace UsbActioner
 
             listener.NewUsbEvent += Listener_NewUsbEvent;
             chkKeepWSAlive.Checked = Properties.Settings.Default.KeepAwake;
-
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -282,7 +281,6 @@ namespace UsbActioner
                 return;
 
             ActionCreate<ApplicationRestartAction>((listActions.SelectedItems[0].Tag as EventAction).device);
-
         }
 
         private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -299,7 +297,6 @@ namespace UsbActioner
                 return;
 
             ActionCreate<BatchFileAction>((listActions.SelectedItems[0].Tag as EventAction).device);
-
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -307,6 +304,22 @@ namespace UsbActioner
             Application.Exit();
         }
 
-      
+        private void clearDevicesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeviceManager.Clear();
+            RefreshUsbDevices();
+        }
+
+        private void reloadDevicesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeviceManager.LoadDevicesFromFile();
+            RefreshUsbDevices();
+        }
+
+        private void reloadActionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ActionManager.LoadActionsFromFile();
+            RefreshActions();
+        }
     }
 }

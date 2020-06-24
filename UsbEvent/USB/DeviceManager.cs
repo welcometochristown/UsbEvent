@@ -11,6 +11,7 @@ namespace UsbActioner.USB
     {
         public const string FILENAME = "dmgr.json";
         private static List<UsbDevice> _devices;
+
         public static IEnumerable<UsbDevice> Devices
         {
             get
@@ -48,6 +49,12 @@ namespace UsbActioner.USB
             SaveDevicesToFile();
         }
 
+        public static void Clear()
+        {
+            _devices.Clear();
+            SaveDevicesToFile();
+        }
+
         public static void AddDeviceFromEvent(UsbEvent e)
         {
             var device = _devices.SingleOrDefault(n => n.Equals(e.device));
@@ -72,16 +79,23 @@ namespace UsbActioner.USB
                     _devices = result.ToList();
             }
             catch (FileNotFoundException)
-            { }
+            { 
+                if(filename != FILENAME)
+                    throw; 
+            }
             catch (DirectoryNotFoundException)
-            { }
+            {
+                if (filename != FILENAME)
+                    throw;
+            }
+
             if (_devices == null)
                 _devices = new List<UsbDevice>();
         }
 
         public static void SaveDevicesToFile(string filename = FILENAME)
         {
-            FileOperations.FileOperation.SaveContent(_devices, filename);
+             FileOperations.FileOperation.SaveContent(_devices, filename);
         }
 
     }
