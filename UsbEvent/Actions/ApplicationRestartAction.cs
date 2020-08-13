@@ -15,23 +15,39 @@ namespace UsbActioner.Actions
     {
         public override string Name => nameof(ApplicationRestartAction);
         public string ApplicationProcessName { get; set; }
+        public string ApplicationPath { get; set; }
         public ProcessWindowStyle WindowStyle { get; set; }
 
         private void RestartProcess(string processname)
         {
+            string fileName = ApplicationPath;
+
             var processes = Process.GetProcessesByName(processname);
 
-            if (!processes.Any())
+            if (processes.Any())
+            {
+                var process = processes[0];
+
+                foreach(var p in processes)
+                {
+                    try
+                    {
+                        p.Kill();
+                    }
+                    catch
+                    {
+                        /*abandon action*/
+                        return;
+                    }
+                }
+
+                fileName = process.MainModule.FileName;
+            }
+
+            if (fileName == null)
                 return;
 
-            var process = processes[0];
-
-            if (process == null)
-                return;
-
-            process.Kill();
-
-            ProcessStartInfo startInfo = new ProcessStartInfo(process.MainModule.FileName);
+            ProcessStartInfo startInfo = new ProcessStartInfo(fileName);
 
             startInfo.WindowStyle = WindowStyle;
             startInfo.UseShellExecute = true;
