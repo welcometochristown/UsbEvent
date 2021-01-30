@@ -214,6 +214,14 @@ namespace UsbActioner
             Process.Start(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
         }
 
+        private void ActionCreate<T>() where T : EventAction, new()
+        {
+            if (listDevices.SelectedItems.Count == 0)
+                return;
+
+            ActionCreate<T>((listDevices.SelectedItems[0]).Tag as UsbDevice);
+        }
+
         private void ActionCreate<T>(UsbDevice device) where T : EventAction, new ()
         {
             var action = new T() { device = device };
@@ -246,27 +254,38 @@ namespace UsbActioner
 
         private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            ActionCreate<ApplicationRestartAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+            ActionCreate<ApplicationRestartAction>();
         }
 
         private void changeScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            ActionCreate<DisplayModeAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+            ActionCreate<DisplayModeAction>();
         }
 
         private void batchFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listDevices.SelectedItems.Count == 0)
-                return;
-
-            ActionCreate<BatchFileAction>((listDevices.SelectedItems[0] as ListViewItem).Tag as UsbDevice);
+            ActionCreate<BatchFileAction>();
         }
+
+        private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ActionCreate<ApplicationRestartAction>();
+        }
+
+        private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ActionCreate<DisplayModeAction>();
+        }
+
+        private void batchFileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ActionCreate<BatchFileAction>();
+        }
+        private void killApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ActionCreate<ApplicationKillAction>();
+        }
+
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -275,29 +294,7 @@ namespace UsbActioner
 
             ActionEdit(listActions.SelectedItems[0].Tag as EventAction);
         }
-        private void restartApplicationToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (listActions.SelectedItems.Count == 0)
-                return;
 
-            ActionCreate<ApplicationRestartAction>((listActions.SelectedItems[0].Tag as EventAction).device);
-        }
-
-        private void setDisplayModeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listActions.SelectedItems.Count == 0)
-                return;
-
-            ActionCreate<DisplayModeAction>((listActions.SelectedItems[0].Tag as EventAction).device);
-        }
-
-        private void batchFileToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (listActions.SelectedItems.Count == 0)
-                return;
-
-            ActionCreate<BatchFileAction>((listActions.SelectedItems[0].Tag as EventAction).device);
-        }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -321,5 +318,7 @@ namespace UsbActioner
             ActionManager.LoadActionsFromFile();
             RefreshActions();
         }
+
+
     }
 }

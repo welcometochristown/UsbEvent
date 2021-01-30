@@ -11,6 +11,7 @@ namespace UsbActioner.Actions.Forms
         public string Process_Name { get; set; }
         public ProcessWindowStyle Window_Style { get; set; } = ProcessWindowStyle.Normal;
         public string Application_Path { get; set; }
+        public bool Run_Minimizer { get; set; }
 
         public FrmApplicationRestart()
         {
@@ -23,6 +24,7 @@ namespace UsbActioner.Actions.Forms
             this.Process_Name = txtProcessName.Text;
             this.Application_Path = !chkRunApplication.Checked || string.IsNullOrWhiteSpace(txtRunApplication.Text) ? null : txtRunApplication.Text;
             this.Window_Style = (ProcessWindowStyle)Enum.Parse(typeof(ProcessWindowStyle), cboStartMode.Text);
+            this.Run_Minimizer = chkMinimizer.Checked;
         }
 
         private void FrmApplicationRestart_Load(object sender, EventArgs e)
@@ -31,6 +33,7 @@ namespace UsbActioner.Actions.Forms
             txtRunApplication.Text = this.Application_Path;
             cboStartMode.Text = this.Window_Style.ToString();
             chkRunApplication.Checked = this.Application_Path != null;
+            chkMinimizer.Checked = this.Run_Minimizer;
         }
 
         public static DialogResult EditAction(ApplicationRestartAction action)
@@ -40,6 +43,7 @@ namespace UsbActioner.Actions.Forms
             frm.Window_Style = action.WindowStyle;
             frm.DeviceActions = action.Actions;
             frm.Application_Path = action.ApplicationPath;
+            frm.Run_Minimizer = action.RunMinimizer;
 
             DialogResult result = frm.ShowDialog();
 
@@ -49,6 +53,7 @@ namespace UsbActioner.Actions.Forms
                 action.WindowStyle = frm.Window_Style;
                 action.Actions = frm.DeviceActions;
                 action.ApplicationPath = frm.Application_Path;
+                action.RunMinimizer = frm.Run_Minimizer;
             }
 
             return result;
@@ -68,6 +73,11 @@ namespace UsbActioner.Actions.Forms
         private void chkRunApplication_CheckedChanged(object sender, EventArgs e)
         {
             pnlRunApplication.Enabled = chkRunApplication.Checked;
+        }
+
+        private void chkMinimizer_CheckedChanged(object sender, EventArgs e)
+        {
+            Run_Minimizer = chkMinimizer.Checked;
         }
     }
 }

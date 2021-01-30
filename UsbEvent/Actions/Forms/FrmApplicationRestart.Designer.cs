@@ -38,6 +38,7 @@
             this.chkRunApplication = new System.Windows.Forms.CheckBox();
             this.btnRunApplicationBrowse = new System.Windows.Forms.Button();
             this.pnlRunApplication = new System.Windows.Forms.Panel();
+            this.chkMinimizer = new System.Windows.Forms.CheckBox();
             this.pnlRunApplication.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,12 +131,24 @@
             this.pnlRunApplication.Size = new System.Drawing.Size(491, 25);
             this.pnlRunApplication.TabIndex = 16;
             // 
+            // chkMinimizer
+            // 
+            this.chkMinimizer.AutoSize = true;
+            this.chkMinimizer.Location = new System.Drawing.Point(396, 99);
+            this.chkMinimizer.Name = "chkMinimizer";
+            this.chkMinimizer.Size = new System.Drawing.Size(100, 17);
+            this.chkMinimizer.TabIndex = 14;
+            this.chkMinimizer.Text = "Run Minimizer";
+            this.chkMinimizer.UseVisualStyleBackColor = true;
+            this.chkMinimizer.CheckedChanged += new System.EventHandler(this.chkMinimizer_CheckedChanged);
+            // 
             // FrmApplicationRestart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 196);
             this.Controls.Add(this.pnlRunApplication);
+            this.Controls.Add(this.chkMinimizer);
             this.Controls.Add(this.chkRunApplication);
             this.Controls.Add(this.cboStartMode);
             this.Controls.Add(this.label2);
@@ -153,6 +166,7 @@
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.cboStartMode, 0);
             this.Controls.SetChildIndex(this.chkRunApplication, 0);
+            this.Controls.SetChildIndex(this.chkMinimizer, 0);
             this.Controls.SetChildIndex(this.pnlRunApplication, 0);
             this.pnlRunApplication.ResumeLayout(false);
             this.pnlRunApplication.PerformLayout();
@@ -172,5 +186,6 @@
         private System.Windows.Forms.CheckBox chkRunApplication;
         private System.Windows.Forms.Button btnRunApplicationBrowse;
         private System.Windows.Forms.Panel pnlRunApplication;
+        private System.Windows.Forms.CheckBox chkMinimizer;
     }
 }
