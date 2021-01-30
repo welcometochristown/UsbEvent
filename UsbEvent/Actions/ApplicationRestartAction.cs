@@ -31,15 +31,11 @@ namespace UsbActioner.Actions
 
         [DllImport("user32.dll")]
         static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
-
-
         public override string Name => nameof(ApplicationRestartAction);
         public string ApplicationProcessName { get; set; }
         public string ApplicationPath { get; set; }
         public ProcessWindowStyle WindowStyle { get; set; }
         public bool RunMinimizer { get; set; }
-
-     
 
         private void RestartProcess(string processname)
         {
@@ -117,7 +113,7 @@ namespace UsbActioner.Actions
            await Task.Run(() =>
             {
                 try
-                { 
+                {
                     RestartProcess(ApplicationProcessName);
                 }
                 catch (Exception ex)
@@ -127,6 +123,9 @@ namespace UsbActioner.Actions
             });
             
         }
+
+
+       
 
         public override string ToString()
         {

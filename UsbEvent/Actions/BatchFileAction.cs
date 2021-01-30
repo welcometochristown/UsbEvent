@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,12 @@ namespace UsbActioner.Actions
         public override DialogResult EditAction()
         {
             return FrmBatchFile.EditAction(this);
+        }
+
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} | {BatchFilePath})";
         }
     }
 }
