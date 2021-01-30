@@ -16,23 +16,20 @@ namespace UsbActioner.Workers
         /// <param name="action"></param>
         /// <param name="requiredsuccesscount">Countinous = 0, Single = 1, Multiple = 2</param>
         /// <returns></returns>
-        public static Task Start(int durationMs, int tick, Func<bool> action, int requiredSuccessCount = 1)
+        public static Task Start(int durationMs, int tick, Func<bool> action, bool continous = false)
         {
-            requiredSuccessCount = Math.Max(requiredSuccessCount, 0); //negative becomes continous
             DateTime end = DateTime.Now.AddMilliseconds(durationMs);
 
             return Task.Run(() =>
             {
-                int successCount = 0;
                 while (DateTime.Now < end)
                 {
-                    Console.WriteLine("tick");
+                    Console.WriteLine("worker tick");
                     System.Threading.Thread.Sleep(tick);
 
-                    if (action())
-                        successCount++;
+                    var result = action();
 
-                    if (requiredSuccessCount != 0 && successCount == requiredSuccessCount)
+                    if (!continous && result)
                     {
                         Console.WriteLine("success!");
                         break;
